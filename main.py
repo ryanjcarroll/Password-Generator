@@ -1,12 +1,9 @@
 import random
 from tkinter import *
-from functools import partial
 
 MAX_LENGTH = 20
-length = 20
-amount_numbers = 2
-amount_specials = 2
 
+##UI class
 class Window():
     def __init__(self):
         self.m = Tk()
@@ -15,6 +12,7 @@ class Window():
         self.output = Label(self.m)
         self.m.title("Password Generator")
 
+    ##builds all widgets and adds them to the window
     def pack(self):
         def slider_handler(self, param):
             global win
@@ -59,41 +57,47 @@ class Window():
         self.specials.grid(row=3, column=2, ipadx = 30, sticky=W)
         self.button.grid(row=4,column=1, ipadx = 30, pady=30)
 
+    #called when user clicks the Get Password button
     def password(self):
         def copy_to_clipboard(self):
             global win
             win.m.clipboard_clear()
             win.m.clipboard_append(win.output['text'])
-            print("copied to clipboard")
+            win.copied = Label(win.m, text="Copied to clipboard", font=("Helvitica", 10, "italic"))
+            win.copied.grid(row=6, column=1, pady=0)
+            win.copied.after(2000, win.copied.destroy)
 
+        ##create new password output box
         self.output.destroy()
         self.password = create_password(self.length.get(), self.numbers.get(), self.specials.get())
         self.output = Label(self.m, text=self.password, borderwidth=2, relief="groove", padx =20, pady=10, font=("Helvitica, 24"))
         self.output.bind("<Button-1>", copy_to_clipboard)
         self.output.grid(row=5, column=0, columnspan=3)
 
+    ##called to build the window and control the main loop
     def run(self):
         self.pack()
         self.m.mainloop()
 
+##password-generating function
 def create_password(length, amount_numbers, amount_specials):
     letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
     specials = ['!','@', '#', '$', '%', '^', '&', '*', '?']
     password = ""
     characters = []
 
-    ##gets letters
+    ##get letters
     for i in range(0, length - amount_numbers - amount_specials):
         if random.randint(0,1) == 1:
             characters.append(random.choice(letters).upper())
         else:
             characters.append(random.choice(letters))
 
-    ##gets numbers
+    ##get numbers
     for i in range(0, amount_numbers):
         characters.append(str(random.randint(0,9)))
 
-    ##gets special chars
+    ##get special chars
     for i in range(0, amount_specials):
         characters.append(random.choice(specials))
 
