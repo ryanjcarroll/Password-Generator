@@ -31,7 +31,7 @@ class Window():
         self.title.grid(row=0,column=0, pady=(20,10), columnspan=3)
 
         ##info text
-        info = "Enter the desired length of your password and the amount of numerical/special characters it should contain, then click Get Password."
+        info = "Enter the desired length of your password and the amount of numerical/special characters it should contain, then click Get Password.  \nClick to copy."
         self.info = Message(self.m, text=info, width=300, justify=CENTER)
         self.info.grid(row=1, column=0, pady=(10,30), columnspan=3)
 
