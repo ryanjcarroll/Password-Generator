@@ -3,12 +3,42 @@ from tkinter import *
 
 MAX_LENGTH = 20
 
+##password-generating function
+def create_password(length, amount_numbers, amount_specials):
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    specials = ['!','@', '#', '$', '%', '^', '&', '*', '?']
+    password = ""
+    characters = []
+
+    ##get letters
+    for i in range(0, length - amount_numbers - amount_specials):
+        if random.randint(0,1) == 1:
+            characters.append(random.choice(letters).upper())
+        else:
+            characters.append(random.choice(letters))
+
+    ##get numbers
+    for i in range(0, amount_numbers):
+        characters.append(str(random.randint(0,9)))
+
+    ##get special chars
+    for i in range(0, amount_specials):
+        characters.append(random.choice(specials))
+
+    ##randomly assemble password string
+    while(len(characters) > 0):
+        next = random.choice(characters)
+        password += next
+        characters.remove(next)
+
+    return(password)
+
 ##UI class
 class Window():
     def __init__(self):
         self.m = Tk()
         self.m.geometry("500x500")
-        self.m.resizable = (False, False)
+        self.m.resizable(False, False)
         self.output = Label(self.m)
         self.m.title("Password Generator")
 
@@ -78,36 +108,6 @@ class Window():
     def run(self):
         self.pack()
         self.m.mainloop()
-
-##password-generating function
-def create_password(length, amount_numbers, amount_specials):
-    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-    specials = ['!','@', '#', '$', '%', '^', '&', '*', '?']
-    password = ""
-    characters = []
-
-    ##get letters
-    for i in range(0, length - amount_numbers - amount_specials):
-        if random.randint(0,1) == 1:
-            characters.append(random.choice(letters).upper())
-        else:
-            characters.append(random.choice(letters))
-
-    ##get numbers
-    for i in range(0, amount_numbers):
-        characters.append(str(random.randint(0,9)))
-
-    ##get special chars
-    for i in range(0, amount_specials):
-        characters.append(random.choice(specials))
-
-    ##build password string
-    while(len(characters) > 0):
-        next = random.choice(characters)
-        password += next
-        characters.remove(next)
-
-    return(password)
 
 win = Window()
 win.run()
