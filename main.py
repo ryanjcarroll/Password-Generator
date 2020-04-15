@@ -26,7 +26,7 @@ def create_password(length, amount_numbers, amount_specials):
         characters.append(random.choice(specials))
 
     ##randomly assemble password string
-    while(len(characters) > 0):
+    while characters:
         next = random.choice(characters)
         password += next
         characters.remove(next)
@@ -44,6 +44,16 @@ class Window():
 
     ##builds all widgets and adds them to the window
     def pack(self):
+        ##title
+        title = "Password Generator"
+        self.title = Message(self.m, text=title, width=400, font=("Helvitica", 24), justify=CENTER)
+        self.title.grid(row=0,column=0, pady=(20,10), columnspan=3)
+
+        ##info text
+        info = "Enter the desired length of your password and the amount of numerical/special characters it should contain, then click Get Password.  \nClick to copy."
+        self.info = Message(self.m, text=info, width=300, justify=CENTER)
+        self.info.grid(row=1, column=0, pady=(10,30), columnspan=3)
+
         def slider_handler(self, param):
             global win
             ##if the specific characters are higher than the length, raise the length to minimum valid value
@@ -55,25 +65,15 @@ class Window():
                 if param == "specials":
                     win.specials.set(win.length.get() - win.numbers.get())
 
-        ##title
-        title = "Password Generator"
-        self.title = Message(self.m, text=title, width=400, font=("Helvitica", 24), justify=CENTER)
-        self.title.grid(row=0,column=0, pady=(20,10), columnspan=3)
-
-        ##info text
-        info = "Enter the desired length of your password and the amount of numerical/special characters it should contain, then click Get Password.  \nClick to copy."
-        self.info = Message(self.m, text=info, width=300, justify=CENTER)
-        self.info.grid(row=1, column=0, pady=(10,30), columnspan=3)
-
         ##sliders and labels
         self.length_label = Label(self.m, text="Length")
         self.length = Scale(self.m, from_=6, to_=MAX_LENGTH, orient=HORIZONTAL, command=lambda x: slider_handler(self, "length"))
 
         self.numbers_label = Label(self.m, text="Numbers")
-        self.numbers = Scale(self.m, from_=0, to_=20, orient=HORIZONTAL, command=lambda x: slider_handler(self, "numbers"))
+        self.numbers = Scale(self.m, from_=0, to_=MAX_LENGTH, orient=HORIZONTAL, command=lambda x: slider_handler(self, "numbers"))
 
         self.specials_label = Label(self.m, text="Special Characters")
-        self.specials = Scale(self.m, from_=0, to_=20, orient=HORIZONTAL, command=lambda x: slider_handler(self, "specials"))
+        self.specials = Scale(self.m, from_=0, to_=MAX_LENGTH, orient=HORIZONTAL, command=lambda x: slider_handler(self, "specials"))
 
         ##button
         self.button = Button(self.m, text="Get Password", command=self.password)
